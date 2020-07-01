@@ -49,7 +49,6 @@ class Employeewage
                 }
         }
 
-        //---------------------------------------------------------------------------------------------------------------------
 
 
         public static int getIdeaEmpWage()
@@ -93,7 +92,7 @@ class Employeewage
                 return IdeaTotalWage;
         }
 
-        //---------------------------------------------------------------------------------------
+
 
         public static int getAirtelEmpWage()
         {
