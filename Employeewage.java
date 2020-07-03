@@ -1,6 +1,6 @@
-public class Employeewage
+public class Employeewage implements Computewages
 {
-        public static final int isPart = 1, isFull = 2;
+        public static final int isPart = 0, isFull = 1;
         int numOfCompany = 0;
 
         CompanyWage[] wageArray;
@@ -13,24 +13,25 @@ public class Employeewage
         public static void main(String[] args)
         {
 
-                System.out.println("Welcome to Employee Wage Computation Program*");
+                System.out.println("Welcome to Employee Wage Computation Program");
 
-                Employeewage empWage = new Employeewage();
 
-                empWage.addCompanyWage("Idea", 30, 25, 100);
-                empWage.addCompanyWage("Airtel", 20, 10, 120);
+                Computewages empWage = new Employeewage();
+
+                empWage.addCompanyWage("Idea", 30, 25, 120);
+                empWage.addCompanyWage("Airtel", 20, 30, 100);
                 empWage.computeEmployeewage();
         }
 
 
-        void addCompanyWage(String company, int empRatePerHr, int workingDays, int maxHrsPerMonth)
+        public void addCompanyWage(String company, int empRatePerHr, int workingDays, int maxHrsPerMonth)
         {
                 wageArray[numOfCompany] = new CompanyWage(company, empRatePerHr, workingDays, maxHrsPerMonth);
 
                 numOfCompany++;
         }
 
-        void computeEmployeewage()
+        public void computeEmployeewage()
         {
                 for (int i=0; i<numOfCompany; i++)
                 {
@@ -66,11 +67,11 @@ public class Employeewage
 
                         if(empHrs > 0)
                         {
-                                System.out.println("Days#: " +totalWorkingDays+"Employee is present and working for : "+empHrs+"hrs");
+                                System.out.println("Days : "+totalWorkingDays+"Employee is present and its working hrs : "+empHrs+"hrs");
                         }
                         else
                         {
-                                System.out.println("Days#:" +totalWorkingDays+"Employee is absent");
+                                System.out.println("Days : "+totalWorkingDays+"Employee is absent");
                         }
                 }
                 return totalEmpHrs * compWage.empRatePerHr;
