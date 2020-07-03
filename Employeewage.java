@@ -1,139 +1,78 @@
-import java.io.*;
-
-class Employeewage
+public class Employeewage
 {
-        public static int IdeaEmpRate = 20,AirtelEmpRate = 30;
-        public static int IdeaMaxHrs = 100, IdeaTotalDays=20;
-        public static int IdeaWage = 0, IdeaWagePerHrs=20, IdeafullDayHrs=8;
-        public static int AirtelMaxHrs = 130, AirtelTotalDays=15;
-        public static int AirtelWage = 0, AirtelWagePerHrs=30, AirtelfullDayHrs=9;
+        public static final int isPart = 1, isFull = 2;
+        int numOfCompany = 0;
 
-        public static void main(String[] args) throws IOException
+        CompanyWage[] wageArray;
+
+        public Employeewage()
+        {
+                wageArray = new CompanyWage[10];
+        }
+
+        public static void main(String[] args)
         {
 
-                System.out.println("..........Welcome to Employee Wage Computation Program...........");
-                System.out.println("\n");
+                System.out.println("Welcome to Employee Wage Computation Program*");
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                Employeewage empWage = new Employeewage();
 
-                System.out.println("1.Check Employee Wage for Idea Company ");
-                System.out.println("2.Check Employee Wage for Airtel Company ");
-                System.out.println("Enter your choice : ");
-                int choice = Integer.parseInt(br.readLine());
-
-                switch(choice)
-                {
-                        case 1:
-                               	IdeaWage = IdeaWagePerHrs * IdeafullDayHrs;
-                                System.out.println("\nFull time Daily Employee Wage salary is = "+IdeaWage);
-
-                                IdeaWage = (IdeaWagePerHrs * IdeafullDayHrs)/2;
-                                System.out.println("Part time Employee Wage salary is = "+IdeaWage);
-
-                                System.out.println("\nEmployee's Scheduled");
-                                getIdeaEmpWage();
-                                break;
-                        case 2:
-                                AirtelWage = AirtelWagePerHrs * AirtelfullDayHrs;
-                                System.out.println("\nFull time Daily Employee Wage salary is = "+AirtelWage);
-
-                                AirtelWage = (AirtelWagePerHrs * AirtelfullDayHrs)/2;
-                                System.out.println("\nPart time Employee Wage salary is = "+AirtelWage);
-
-                                System.out.println("\nEmployee's Scheduled");
-                                getAirtelEmpWage();
-                                break;
-                        default:
-                                System.out.println("Enter valid choice...");
-                                break;
-                }
+                empWage.addCompanyWage("Idea", 30, 25, 100);
+                empWage.addCompanyWage("Airtel", 20, 10, 120);
+                empWage.computeEmployeewage();
         }
 
 
-
-        public static int getIdeaEmpWage()
+        void addCompanyWage(String company, int empRatePerHr, int workingDays, int maxHrsPerMonth)
         {
-                int IdeaEmpHrs=0, IdeaTotalEmpHrs=0,IdeaTotalWorkingDays=0;
+                wageArray[numOfCompany] = new CompanyWage(company, empRatePerHr, workingDays, maxHrsPerMonth);
 
-                while(IdeaTotalEmpHrs <= IdeaMaxHrs && IdeaTotalWorkingDays < IdeaTotalDays)
-                {
-                        IdeaTotalWorkingDays++;
-
-                        int CheckEmp = (int)Math.floor(Math.random() * 10) % 3;
-
-                        switch(CheckEmp)
-                        {
-                                case 1:
-                                        IdeaEmpHrs = 4;
-                                        break;
-                                case 2:
-                                        IdeaEmpHrs = 8;
-                                        break;
-                                default:
-                                        IdeaEmpHrs = 0;
-                                        break;
-                        }
-
-                        IdeaTotalEmpHrs += IdeaEmpHrs;
-
-                        if(IdeaEmpHrs > 0)
-                        {
-                                System.out.println("Day" +IdeaTotalWorkingDays+"  Employee is present and working hrs is : "+IdeaEmpHrs+"hrs");
-                        }
-                        else
-                        {
-                                System.out.println("Day" +IdeaTotalWorkingDays+"  Employee is not present");
-                        }
-                }
-
-                int IdeaTotalWage = IdeaTotalEmpHrs * IdeaEmpRate;
-                System.out.println("\nTotal Employee Wage for Idea Company is : "+IdeaTotalWage);
-
-                return IdeaTotalWage;
+                numOfCompany++;
         }
 
-
-
-        public static int getAirtelEmpWage()
+        void computeEmployeewage()
         {
-                int AirtelEmpHrs=0, AirtelTotalEmpHrs=0,AirtelTotalWorkingDays=0;
-
-                while(AirtelTotalEmpHrs <= AirtelMaxHrs && AirtelTotalWorkingDays < AirtelTotalDays)
+                for (int i=0; i<numOfCompany; i++)
                 {
-                        AirtelTotalWorkingDays++;
+                        wageArray[i].setTotalEmployeewage(this.computeEmployeewage(wageArray[i]));
 
-                        int Checkemp = (int)Math.floor(Math.random() * 10) % 3;
+                        System.out.println(wageArray[i]);
+                }
+        }
 
-                        switch(Checkemp)
+        int computeEmployeewage(CompanyWage compWage)
+        {
+                int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
+
+                while(totalEmpHrs <= compWage.maxHrsPerMonth && totalWorkingDays < compWage.workingDays)
+                {
+                        totalWorkingDays++;
+
+                        int empCheck = (int)Math.floor(Math.random() * 10) % 3;
+
+                        switch(empCheck)
                         {
-                                case 1:
-                                        AirtelEmpHrs = 4;
+                                case isPart:
+                                        empHrs = 4;
                                         break;
-                                case 2:
-                                        AirtelEmpHrs = 9;
+                                case isFull:
+                                        empHrs = 8;
                                         break;
                                 default:
-                                        AirtelEmpHrs = 0;
+                                        empHrs = 0;
                                         break;
                         }
+                        totalEmpHrs += empHrs;
 
-                        AirtelTotalEmpHrs += AirtelEmpHrs;
-
-                        if(AirtelEmpHrs > 0)
+                        if(empHrs > 0)
                         {
-                                System.out.println("Days"+AirtelTotalWorkingDays+"  Employee is present and working hrs is : "+AirtelEmpHrs+"hrs");
+                                System.out.println("Days#: " +totalWorkingDays+"Employee is present and working for : "+empHrs+"hrs");
                         }
                         else
                         {
-                                System.out.println("Days"+AirtelTotalWorkingDays+"  Employee is absent");
+                                System.out.println("Days#:" +totalWorkingDays+"Employee is absent");
                         }
                 }
-
-                int AirtelTotalWage = AirtelTotalEmpHrs * AirtelEmpRate;
-                System.out.println("\nTotal Employee Wage for Airtel Company : "+AirtelTotalWage);
-
-                return AirtelTotalWage;
+                return totalEmpHrs * compWage.empRatePerHr;
         }
 }
-
-
