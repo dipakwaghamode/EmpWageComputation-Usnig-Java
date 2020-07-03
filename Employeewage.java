@@ -1,13 +1,16 @@
+import java.util.*;
+
 public class Employeewage implements Computewages
 {
         public static final int isPart = 0, isFull = 1;
         int numOfCompany = 0;
 
-        CompanyWage[] wageArray;
-
+        LinkedList<CompanyWage> companyWageList;
+	Map<String,CompanyWage> companyWageMap;
         public Employeewage()
         {
-                wageArray = new CompanyWage[10];
+                companyWageList = new LinkedList<>();
+		companyWageMap = new HashMap<>();
         }
 
         public static void main(String[] args)
@@ -18,28 +21,37 @@ public class Employeewage implements Computewages
 
                 Computewages empWage = new Employeewage();
 
-                empWage.addCompanyWage("Idea", 30, 25, 120);
-                empWage.addCompanyWage("Airtel", 20, 30, 100);
+                empWage.addCompanyWage("Idea", 20, 30, 230);
+                empWage.addCompanyWage("BridgeLabz", 30, 20, 120);
                 empWage.computeEmployeewage();
+
+		System.out.println("Total Wage for CapGemini => "+empWage.getTotalWage("CapG"));
         }
 
 
         public void addCompanyWage(String company, int empRatePerHr, int workingDays, int maxHrsPerMonth)
         {
-                wageArray[numOfCompany] = new CompanyWage(company, empRatePerHr, workingDays, maxHrsPerMonth);
+                CompanyWage companyWage = new CompanyWage(company, empRatePerHr, workingDays, maxHrsPerMonth);
 
-                numOfCompany++;
+		companyWageList.add(companyWage);
+		companyWageMap.put(company, companyWage);
         }
 
         public void computeEmployeewage()
         {
-                for (int i=0; i<numOfCompany; i++)
+                for (int i=0; i<companyWageList.size(); i++)
                 {
-                        wageArray[i].setTotalEmployeewage(this.computeEmployeewage(wageArray[i]));
+                        CompanyWage companyWage = companyWageList.get(i);
+			companyWage.setTotalEmployeewage(this.computeEmployeewage(companyWage));
 
-                        System.out.println(wageArray[i]);
+                        System.out.println(companyWage);
                 }
         }
+
+	public int getTotalWage(String company)
+	{
+		return companyWageMap.get(company).totalEmployeewage;
+	}
 
         int computeEmployeewage(CompanyWage compWage)
         {
@@ -67,11 +79,11 @@ public class Employeewage implements Computewages
 
                         if(empHrs > 0)
                         {
-                                System.out.println("Days : "+totalWorkingDays+"Employee is present and its working hrs : "+empHrs+"hrs");
+                                System.out.println("Days#: "+totalWorkingDays+"Employee is present and its working hrs : "+empHrs+"hrs");
                         }
                         else
                         {
-                                System.out.println("Days : "+totalWorkingDays+"Employee is absent");
+                                System.out.println("Days#: "+totalWorkingDays+"Employee is not present");
                         }
                 }
                 return totalEmpHrs * compWage.empRatePerHr;
